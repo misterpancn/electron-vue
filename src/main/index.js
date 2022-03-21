@@ -1,7 +1,7 @@
 'use strict'
 
-import {app, BrowserWindow} from 'electron'
-import mainWin from '../renderer/lib/window/mainWindow'
+import {app} from 'electron'
+import mainWin from '../renderer/libs/mainWindow'
 import '../renderer/store'
 
 /**
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'development') {
 
 let mainWindow
 let downloadItems = []
-function init () {
+function init() {
   mainWindow = mainWin(downloadItem)
   // chatImgWin(mainWindow)
 }
@@ -33,7 +33,7 @@ app.on('activate', () => {
   }
 })
 
-function downloadItem (item) {
+function downloadItem(item) {
   if (item.type === 'add') {
     if (item.downloadUrl.indexOf('?') !== -1) {
       item.downloadUrl = item.downloadUrl.split('?')[0];

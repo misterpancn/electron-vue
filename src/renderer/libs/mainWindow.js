@@ -1,7 +1,7 @@
-import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron'
-export default function main (callbacks) {
+import {app, BrowserWindow, ipcMain, Menu, Tray} from 'electron'
+export default function main(callbacks) {
   const winURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:9080`
+    ? 'http://localhost:9080'
     : `file://${require('path').join(__dirname, '/index.html')}`
   /**
    * Initial window options
@@ -34,10 +34,10 @@ export default function main (callbacks) {
     // exit = true
     app.quit()
   })
-  var appTray = null;
+  let appTray = null;
   if (process.platform === 'win32') {
     // Set tray ICONS and menus
-    var trayMenuTemplate = [
+    const trayMenuTemplate = [
       {
         label: 'open',
         click: () => {
@@ -52,7 +52,7 @@ export default function main (callbacks) {
       }
     ];
     // System Tray icon
-    let trayIco = require('path').join(__dirname, '/static/img/icons/icon.ico');
+    const trayIco = require('path').join(__dirname, '/static/img/icons/icon.ico');
     appTray = process.env.NODE_ENV === 'development' ? new Tray('build/icons/icon.ico') : new Tray(trayIco);
     // Context menu for the icon
     const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
@@ -61,18 +61,18 @@ export default function main (callbacks) {
     // Sets the context menu for this icon
     appTray.setContextMenu(contextMenu);
     // Click the small icon in the lower right corner to display the application left button
-    appTray.on('click', function () {
+    appTray.on('click', function() {
       mainWindow.show();
     })
     // Right click
     appTray.on('right-click', () => {
       appTray.popUpContextMenu(trayMenuTemplate);
     });
-  };
-  const { session } = require('electron')
+  }
+  const {session} = require('electron')
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    let c = {
+    const c = {
       responseHeaders: {
         ...details.responseHeaders,
         'Content-Security-Policy': ['default-src \'self\' \'unsafe-inline\' \'unsafe-eval\' data:']
