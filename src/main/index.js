@@ -1,6 +1,6 @@
 'use strict'
 
-import {app} from 'electron'
+import { app } from 'electron'
 import mainWin from '../renderer/libs/mainWindow'
 import '../renderer/store'
 
@@ -9,12 +9,12 @@ import '../renderer/store'
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow
 let downloadItems = []
-function init() {
+function init () {
   mainWindow = mainWin(downloadItem)
   // chatImgWin(mainWindow)
 }
@@ -33,10 +33,10 @@ app.on('activate', () => {
   }
 })
 
-function downloadItem(item) {
+function downloadItem (item) {
   if (item.type === 'add') {
     if (item.downloadUrl.indexOf('?') !== -1) {
-      item.downloadUrl = item.downloadUrl.split('?')[0];
+      item.downloadUrl = item.downloadUrl.split('?')[0]
     }
     downloadItems.push(item)
   }
@@ -54,13 +54,13 @@ function downloadItem(item) {
  */
 
 /*
-import { autoUpdater } from 'electron-updater'
+ import { autoUpdater } from 'electron-updater'
 
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
+ autoUpdater.on('update-downloaded', () => {
+ autoUpdater.quitAndInstall()
+ })
 
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
+ app.on('ready', () => {
+ if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+ })
  */

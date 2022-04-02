@@ -1,5 +1,5 @@
-import {app, BrowserWindow, ipcMain, Menu, Tray} from 'electron'
-export default function main(callbacks) {
+import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron'
+export default function main (callbacks) {
   const winURL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:9080'
     : `file://${require('path').join(__dirname, '/index.html')}`
@@ -8,16 +8,16 @@ export default function main(callbacks) {
    */
     // let exit = false
   let mainWindow = new BrowserWindow({
-      height: 563,
-      // useContentSize: true,
-      width: 1000,
-      show: false,
-      frame: false,
-      webPreferences: {
-        nodeIntegration: true,
-        enableRemoteModule: false
-      }
-    })
+    height: 563,
+    // useContentSize: true,
+    width: 1000,
+    show: false,
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: false
+    }
+  })
 
   // mainWindow.webContents.openDevTools()
   mainWindow.loadURL(winURL)
@@ -34,42 +34,42 @@ export default function main(callbacks) {
     // exit = true
     app.quit()
   })
-  let appTray = null;
+  let appTray = null
   if (process.platform === 'win32') {
     // Set tray ICONS and menus
     const trayMenuTemplate = [
       {
         label: 'open',
         click: () => {
-          mainWindow.show();
+          mainWindow.show()
         }
       },
       {
         label: 'exit',
         click: () => {
-          app.quit();
+          app.quit()
         }
       }
-    ];
+    ]
     // System Tray icon
-    const trayIco = require('path').join(__dirname, '/static/img/icons/icon.ico');
-    appTray = process.env.NODE_ENV === 'development' ? new Tray('build/icons/icon.ico') : new Tray(trayIco);
+    const trayIco = require('path').join(__dirname, '/static/img/icons/icon.ico')
+    appTray = process.env.NODE_ENV === 'development' ? new Tray('build/icons/icon.ico') : new Tray(trayIco)
     // Context menu for the icon
-    const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
+    const contextMenu = Menu.buildFromTemplate(trayMenuTemplate)
     // Sets the hover prompt for this tray icon
-    appTray.setToolTip('chat');
+    appTray.setToolTip('chat')
     // Sets the context menu for this icon
-    appTray.setContextMenu(contextMenu);
+    appTray.setContextMenu(contextMenu)
     // Click the small icon in the lower right corner to display the application left button
-    appTray.on('click', function() {
-      mainWindow.show();
+    appTray.on('click', function () {
+      mainWindow.show()
     })
     // Right click
     appTray.on('right-click', () => {
-      appTray.popUpContextMenu(trayMenuTemplate);
-    });
+      appTray.popUpContextMenu(trayMenuTemplate)
+    })
   }
-  const {session} = require('electron')
+  const { session } = require('electron')
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     const c = {
@@ -79,10 +79,9 @@ export default function main(callbacks) {
       }
     }
     callback(c)
-  });
+  })
   ipcMain.on('exit', (e) => {
     mainWindow.close()
   })
   return mainWindow
 }
-
